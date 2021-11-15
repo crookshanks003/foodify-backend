@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
-import {Connection} from "typeorm";
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { Connection } from "typeorm";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { User } from "./entities/"
+import { AuthModule } from './modules/auth/auth.module';
 require("dotenv").config();
 
 @Module({
@@ -14,12 +14,11 @@ require("dotenv").config();
 			username: process.env.DB_USER,
 			password: process.env.DB_PASSWORD,
 			database: process.env.DB_NAME,
-			entities: [],
+			entities: [User],
 			synchronize: true,
 		}),
+		AuthModule,
 	],
-	controllers: [AppController],
-	providers: [AppService],
 })
 export class AppModule {
 	constructor(private connection: Connection) {}
