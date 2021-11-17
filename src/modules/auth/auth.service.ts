@@ -19,7 +19,7 @@ export class AuthService {
 
 	async createUser(user: CreateUser) {
 		const newUser = new User();
-		newUser.is_staff = user.isStaff;
+		newUser.is_staff = false;
 		newUser.name = user.name;
 		newUser.phone = user.phone;
 		newUser.password = await bcrypt.hash(user.password, this.saltRounds);
@@ -31,7 +31,7 @@ export class AuthService {
 		if (!existingUser) {
 			throw new BadRequestException("Account does not exist");
 		}
-		this.verifyPassword(credentials.password, existingUser.password);
+		await this.verifyPassword(credentials.password, existingUser.password);
 		return existingUser;
 	}
 

@@ -8,9 +8,6 @@ export class CreateUser {
 	@Length(10, 10, {message:"Invalid phone number"})
 	phone!:string;
 
-	@IsBoolean()
-	isStaff!:boolean;
-
 	@IsString()
 	@Length(6)
 	password!:string;
