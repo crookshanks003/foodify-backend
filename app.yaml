@@ -1,0 +1,9 @@
+runtime: nodejs16
+
+env_variables:
+    DB_USER: "root"
+    DB_NAME: "foodify"
+    DB_PASSWORD: "tmkc@1234"
+    DB_HOST: "34.93.212.86"
+    DB_SOCKET: "/cloudsql/foodify-332610:asia-south1:foodify-master"
+    JWT_SECRET: "j@1d#p6g"
