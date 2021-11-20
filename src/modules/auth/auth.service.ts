@@ -29,7 +29,7 @@ export class AuthService {
 	async getUser(credentials: LoginUser) {
 		const existingUser = await this.getUserByPhone(credentials.phone);
 		if (!existingUser) {
-			throw new BadRequestException("Account does not exist");
+			throw new BadRequestException(["Account does not exist"]);
 		}
 		await this.verifyPassword(credentials.password, existingUser.password);
 		return existingUser;
@@ -47,7 +47,7 @@ export class AuthService {
 	private async verifyPassword(password: string, hash: string) {
 		const match = await bcrypt.compare(password, hash);
 		if (!match) {
-			throw new BadRequestException("Password is incorrect");
+			throw new BadRequestException(["Password is incorrect"]);
 		}
 	}
 }
