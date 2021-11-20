@@ -35,8 +35,8 @@ export class AuthService {
 		return existingUser;
 	}
 
-	getJwtToken({ phone, id }: User) {
-		const payload = { user: { phone, userId: id } };
+	getJwtToken({ is_staff, id }: User) {
+		const payload = { user: { isStaff: is_staff, userId: id } };
 		return this.jwtService.sign(payload);
 	}
 
