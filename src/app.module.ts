@@ -1,8 +1,9 @@
 import { Module } from "@nestjs/common";
 import { Connection } from "typeorm";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { User } from "./entities/";
+import { Category, FoodItem, User } from "./entities/";
 import { AuthModule } from "./modules/auth/auth.module";
+import { CategoryModule } from "./modules/category/category.module";
 require("dotenv").config();
 
 @Module({
@@ -14,10 +15,11 @@ require("dotenv").config();
 			database: process.env.DB_NAME,
 			socketPath: process.env.DB_SOCKET,
 			// host: process.env.DB_HOST,
-			entities: [User],
+			entities: [User, Category, FoodItem],
 			synchronize: true,
 		}),
 		AuthModule,
+		CategoryModule,
 	],
 })
 export class AppModule {
