@@ -14,7 +14,7 @@ export class AuthController {
 	async userSignup(@Body() body: CreateUser) {
 		const existingUser = await this.userService.getUserByPhone(body.phone);
 		if (existingUser) {
-			throw new BadRequestException(`Account with phone ${body.phone} already exists`);
+			throw new BadRequestException([`Account with phone ${body.phone} lready exists`]);
 		}
 		const user = await this.userService.createUser(body);
 		const token = this.userService.getJwtToken(user);
