@@ -4,6 +4,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Category, FoodItem, User } from "./entities/";
 import { AuthModule } from "./modules/auth/auth.module";
 import { CategoryModule } from "./modules/category/category.module";
+import { FoodModule } from "./modules/fooditem/fooditem.module";
 require("dotenv").config();
 
 @Module({
@@ -20,6 +21,7 @@ require("dotenv").config();
 		}),
 		AuthModule,
 		CategoryModule,
+		FoodModule,
 	],
 })
 export class AppModule {

@@ -15,6 +15,12 @@ export class FoodItem {
 	@Column()
 	image: string;
 
+	@Column()
+	price: number;
+
+	@Column({default: 100})
+	calories: number;
+
 	@ManyToOne(() => Category, (category) => category.items)
 	category: Category;
 }
