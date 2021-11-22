@@ -17,7 +17,10 @@ require("dotenv").config();
 			socketPath: process.env.DB_SOCKET,
 			// host: process.env.DB_HOST,
 			entities: [User, Category, FoodItem],
-			synchronize: true,
+			migrations: ["src/migrations/*{.ts,.js}"],
+			cli: {
+				migrationsDir: "src/migrations"
+			}
 		}),
 		AuthModule,
 		CategoryModule,

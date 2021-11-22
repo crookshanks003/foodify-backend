@@ -17,6 +17,9 @@ export class User {
 	@Column()
 	is_staff: boolean;
 
+	@Column({default: 0})
+	calories: number;
+
 	@CreateDateColumn()
 	registered_on: Date;
 }

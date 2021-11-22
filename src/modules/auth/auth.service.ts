@@ -22,6 +22,7 @@ export class AuthService {
 		newUser.is_staff = false;
 		newUser.name = user.name;
 		newUser.phone = user.phone;
+		newUser.calories = 0;
 		newUser.password = await bcrypt.hash(user.password, this.saltRounds);
 		return await this.userRepo.save(newUser);
 	}
