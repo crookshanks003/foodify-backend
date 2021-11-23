@@ -1,5 +1,5 @@
-import { BadRequestException, Body, Request, Controller, Get, Post } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { BadRequestException, Body, Request, Controller, Get, Post, InternalServerErrorException, UnauthorizedException } from "@nestjs/common";
 import { LoginUser } from "./dto/login-user.dto";
 import { AuthService } from "./auth.service";
 import { Private } from "src/common/isPublic";
@@ -29,8 +29,15 @@ export class AuthController {
 	@Private()
 	@Get(["", "info"])
 	async getUserInfo(@Request() req: any) {
-		const { phone } = req.user;
-		const { password, ...rest } = await this.userService.getUserByPhone(phone);
+		const { userId } = req.user;
+		if(!userId){
+			throw new InternalServerErrorException("Something went wrong! Please login again");
+		}
+		const user = await this.userService.getUserById(userId);
+		if(!user){
+			throw new UnauthorizedException("Invalid token")
+		}
+		const {password, ...rest} = user;
 		return rest;
 	}
 }
