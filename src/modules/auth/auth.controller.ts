@@ -30,12 +30,9 @@ export class AuthController {
 	@Get(["", "info"])
 	async getUserInfo(@Request() req: any) {
 		const { userId } = req.user;
-		if(!userId){
-			throw new InternalServerErrorException("Something went wrong! Please login again");
-		}
 		const user = await this.userService.getUserById(userId);
 		if(!user){
-			throw new UnauthorizedException("Invalid token")
+			throw new BadRequestException(["User does not exist"])
 		}
 		const {password, ...rest} = user;
 		return rest;

@@ -7,9 +7,6 @@ export class OrderItemDto {
 }
 
 export class CreateOrderDto {
-	@IsNumber()
-	userId: number;
-
 	@IsArray()
 	@ValidateNested({ each: true })
 	@Type(() => OrderItemDto)
