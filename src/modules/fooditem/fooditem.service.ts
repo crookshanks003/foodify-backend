@@ -21,14 +21,14 @@ export class FoodService {
 		return await this.foodRepo.findOne({ id });
 	}
 
-	async deleteFood(id: number){
-		return await this.foodRepo.delete(id)
+	async deleteFood(id: number) {
+		return await this.foodRepo.delete(id);
 	}
 
-	async addFood(food : CreateFoodDto, image: string) {
-		const category = await this.categoryRepo.findOne({id: parseInt(food.categoryId)})
-		if(!category){
-			throw new BadRequestException(["Category does not exist"])
+	async addFood(food: CreateFoodDto, image: string) {
+		const category = await this.categoryRepo.findOne({ id: parseInt(food.categoryId) });
+		if (!category) {
+			throw new BadRequestException(["Category does not exist"]);
 		}
 		const newFood = new FoodItem();
 		newFood.description = food.description;

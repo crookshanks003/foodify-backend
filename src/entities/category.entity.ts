@@ -15,6 +15,6 @@ export class Category {
 	@Column()
 	image: string;
 
-	@OneToMany((type) => FoodItem, (item) => item.category)
+	@OneToMany(() => FoodItem, (item) => item.category)
 	items: FoodItem[];
 }

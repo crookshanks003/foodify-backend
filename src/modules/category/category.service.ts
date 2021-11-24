@@ -19,7 +19,7 @@ export class CategoryService {
 		const category = await this.categoryRepo
 			.createQueryBuilder("category")
 			.innerJoinAndSelect("category.items", "food_item")
-			.where("category.id = :id", {id})
+			.where("category.id = :id", { id })
 			.getOne();
 		return category;
 	}

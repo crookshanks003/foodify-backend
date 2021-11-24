@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { User } from "../../entities/";
-import { CreateUser } from "./dto/create-user.dto";
+import { CreateUserDto } from "./dto/create-user.dto";
 import * as bcrypt from "bcrypt";
 import { LoginUser } from "./dto/login-user.dto";
 import { JwtService } from "@nestjs/jwt";
@@ -17,7 +17,7 @@ export class AuthService {
 		private readonly jwtService: JwtService,
 	) {}
 
-	async createUser(user: CreateUser) {
+	async createUser(user: CreateUserDto) {
 		const newUser = new User();
 		newUser.is_staff = false;
 		newUser.name = user.name;
