@@ -1,5 +1,5 @@
 import { BadRequestException, Body, Request, Controller, Get, Post } from "@nestjs/common";
-import { CreateUser } from "./dto/create-user.dto";
+import { CreateUserDto } from "./dto/create-user.dto";
 import { LoginUser } from "./dto/login-user.dto";
 import { AuthService } from "./auth.service";
 import { Private } from "src/common/isPublic";
@@ -9,7 +9,7 @@ export class AuthController {
 	constructor(private readonly userService: AuthService) {}
 
 	@Post("signup")
-	async userSignup(@Body() body: CreateUser) {
+	async userSignup(@Body() body: CreateUserDto) {
 		const existingUser = await this.userService.getUserByPhone(body.phone);
 		if (existingUser) {
 			throw new BadRequestException([`Account with phone ${body.phone} already exists`]);

@@ -16,7 +16,11 @@ export class CategoryService {
 	}
 
 	async getCategoryById(id: number) {
-		const category = await this.categoryRepo.findOne({ id });
+		const category = await this.categoryRepo
+			.createQueryBuilder("category")
+			.innerJoinAndSelect("category.items", "food_item")
+			.where("category.id = :id", { id })
+			.getOne();
 		return category;
 	}
 
