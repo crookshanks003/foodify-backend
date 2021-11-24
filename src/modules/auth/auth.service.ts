@@ -45,6 +45,10 @@ export class AuthService {
 		return await this.userRepo.findOne({ phone });
 	}
 
+	async getUserById(id:number){
+		return await this.userRepo.findOne({id})
+	}
+
 	private async verifyPassword(password: string, hash: string) {
 		const match = await bcrypt.compare(password, hash);
 		if (!match) {

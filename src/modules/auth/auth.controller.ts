@@ -29,8 +29,12 @@ export class AuthController {
 	@Private()
 	@Get(["", "info"])
 	async getUserInfo(@Request() req: any) {
-		const { phone } = req.user;
-		const { password, ...rest } = await this.userService.getUserByPhone(phone);
+		const { userId } = req.user;
+		const user = await this.userService.getUserById(userId);
+		if(!user){
+			throw new BadRequestException(["User does not exist"])
+		}
+		const {password, ...rest} = user;
 		return rest;
 	}
 }

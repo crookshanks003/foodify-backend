@@ -13,9 +13,9 @@ export class OrderStatus {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	//0 -> confirmed, 1 -> prepared, 2 -> delivered
+	//0 -> confirmed, 1 -> prepared, 2 -> delivered, 3 -> canceled
 	@Column({ default: 0 })
-	status: 0 | 1 | 2;
+	status: 0 | 1 | 2 | 3;
 
 	@CreateDateColumn()
 	order_time: Date;
