@@ -37,3 +37,4 @@ lerna-debug.log*
 .env
 .env.developement
 app.yaml
+ormconfig.json

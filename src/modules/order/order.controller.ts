@@ -1,4 +1,14 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Request } from "@nestjs/common";
+import {
+	BadRequestException,
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Patch,
+	Post,
+	Request,
+} from "@nestjs/common";
 import { Private } from "src/common/isPublic";
 import { OrderItem } from "src/entities/order_item.entity";
 import { CreateOrderDto } from "./dto/create-order.dto";
@@ -11,8 +21,8 @@ export class OrderController {
 
 	@Private()
 	@Get(":id")
-	async getById(@Param("id") id: number, @Request() req:any) {
-		const {userId} = req.user;
+	async getById(@Param("id") id: number, @Request() req: any) {
+		const { userId } = req.user;
 		return await this.orderService.getOrderById(id, userId);
 	}
 
@@ -37,25 +47,23 @@ export class OrderController {
 			return newOrderItem;
 		});
 		const savedOrderItems = await this.orderService.newOrderItem(orderItems);
-		const order = await this.orderService.addOrder(body, user, savedOrderItems);
-		return order;
+		return this.orderService.addOrder(body, user, savedOrderItems);
 	}
 
 	@Private()
 	@Get(":id/status")
-	async getOrderStatus(@Param("id") orderId: number, @Request() req:any) {
-		const {userId} = req.user;
-		await this.orderService.checkOrderOwnership(userId, orderId)
-		return this.orderService.getOrderStatus(orderId);
+	getOrderStatus(@Param("id") orderId: number, @Request() req: any) {
+		const { userId } = req.user;
+		return this.orderService.getOrderStatus(orderId, userId);
 	}
 
-	@Patch(":id")
-	async updateOrderStatus(@Body() body:UpdateStatusDto) {
-		return await this.orderService.updateOrderStatus(body);
+	@Patch(":id/status")
+	updateOrderStatus(@Body() body: UpdateStatusDto) {
+		return this.orderService.updateOrderStatus(body);
 	}
 
 	@Delete(":id")
-		async cancelOrder(@Param("id") id:number){
-			return await this.orderService.cancelOrder(id);
+	cancelOrder(@Param("id") id: number) {
+		return this.orderService.cancelOrder(id);
 	}
 }

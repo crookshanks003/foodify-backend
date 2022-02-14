@@ -34,7 +34,6 @@ export class FoodService {
 		newFood.description = food.description;
 		newFood.name = food.name;
 		newFood.price = parseInt(food.price);
-		newFood.calories = parseInt(food.calories);
 		newFood.image = image;
 		newFood.category = category;
 		return await this.foodRepo.save(newFood);

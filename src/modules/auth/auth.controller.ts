@@ -1,5 +1,5 @@
 import { CreateUserDto } from "./dto/create-user.dto";
-import { BadRequestException, Body, Request, Controller, Get, Post, InternalServerErrorException, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Body, Request, Controller, Get, Post } from "@nestjs/common";
 import { LoginUser } from "./dto/login-user.dto";
 import { AuthService } from "./auth.service";
 import { Private } from "src/common/isPublic";
@@ -15,14 +15,14 @@ export class AuthController {
 			throw new BadRequestException([`Account with phone ${body.phone} already exists`]);
 		}
 		const user = await this.userService.createUser(body);
-		const token = this.userService.getJwtToken(user);
+		const token = this.userService.getJwtToken(false, user.id);
 		return { access_token: token };
 	}
 
 	@Post("login")
 	async userLogin(@Body() body: LoginUser) {
 		const user = await this.userService.getUser(body);
-		const token = this.userService.getJwtToken(user);
+		const token = this.userService.getJwtToken(false, user.id);
 		return { access_token: token };
 	}
 
@@ -31,10 +31,10 @@ export class AuthController {
 	async getUserInfo(@Request() req: any) {
 		const { userId } = req.user;
 		const user = await this.userService.getUserById(userId);
-		if(!user){
-			throw new BadRequestException(["User does not exist"])
+		if (!user) {
+			throw new BadRequestException(["User does not exist"]);
 		}
-		const {password, ...rest} = user;
+		const { password, ...rest } = user;
 		return rest;
 	}
 }

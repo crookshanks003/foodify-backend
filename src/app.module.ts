@@ -17,8 +17,8 @@ require("dotenv").config();
 			username: process.env.DB_USER,
 			password: process.env.DB_PASSWORD,
 			database: process.env.DB_NAME,
-			socketPath: process.env.DB_SOCKET,
-			// host: process.env.DB_HOST,
+			// socketPath: process.env.DB_SOCKET,
+			host: process.env.DB_HOST,
 			entities: [User, Category, FoodItem, Order, OrderStatus, DeliveryBoy, OrderItem],
 			migrations: ["dist/src/migrations/*.ts"],
 			cli: {

@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Category } from "./category.entity";
 import { OrderItem } from "./order_item.entity";
+import { Restaurant } from "./restaurant.entity";
 
 @Entity()
 export class FoodItem {
@@ -19,12 +20,12 @@ export class FoodItem {
 	@Column()
 	price: number;
 
-	@Column({ default: 100 })
-	calories: number;
-
 	@ManyToOne(() => Category, (category) => category.items)
 	category: Category;
 
-	@OneToMany(() => OrderItem, orderItem => orderItem.foodItem)
-	orderItem: OrderItem[]
+	@OneToMany(() => OrderItem, (orderItem) => orderItem.foodItem)
+	orderItem: OrderItem[];
+
+	@ManyToOne(() => Restaurant, (restaurant) => restaurant.foodItems)
+	restaurant: Restaurant;
 }

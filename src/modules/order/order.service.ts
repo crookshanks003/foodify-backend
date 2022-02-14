@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { sampleTime } from "rxjs";
-import { FoodItem, Order, OrderStatus, User, OrderItem } from "src/entities";
+import { FoodItem, Order, OrderStatus, User, OrderItem, OrderStatusEnum } from "src/entities";
 import { Repository } from "typeorm";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateStatusDto } from "./dto/update-status.dto";
@@ -32,27 +32,28 @@ export class OrderService {
 			.getOne();
 	}
 
-	async getUserById(id: number) {
-		return await this.userRepo.findOne({ id });
+	getUserById(id: number) {
+		return this.userRepo.findOne({ id });
 	}
 
-	async getFoodItemById(id: number) {
-		return await this.foodRepo.findOneOrFail({ id });
+	getFoodItemById(id: number) {
+		return this.foodRepo.findOneOrFail({ id });
 	}
 
-	async getFoodByIds(ids: number[]) {
-		return await this.foodRepo.findByIds(ids);
+	getFoodByIds(ids: number[]) {
+		return this.foodRepo.findByIds(ids);
 	}
 
-	async newOrderItem(items: OrderItem[]) {
-		return await this.orderItemRepo.save(items);
+	newOrderItem(items: OrderItem[]) {
+		return this.orderItemRepo.save(items);
 	}
 
-	async getOrderStatus(id: number) {
-		return await this.orderStatusRepo.findOne({ order: { id } });
+	async getOrderStatus(id: number, userId: number) {
+		await this.checkOrderOwnership(userId, id);
+		return this.orderStatusRepo.findOne({ order: { id } });
 	}
 
-	async checkOrderOwnership(userId: number, orderId: number) {
+	private async checkOrderOwnership(userId: number, orderId: number) {
 		const order = await this.orderRepo
 			.createQueryBuilder("order")
 			.innerJoin("order.user", "user")
@@ -62,13 +63,12 @@ export class OrderService {
 		if (order.user.id !== userId) {
 			throw new BadRequestException([`This order does not belong to user ${userId}`]);
 		}
-		return;
+		return true;
 	}
 
 	async addOrder(order: CreateOrderDto, user: User, orderItems: OrderItem[]) {
 		const newOrder = new Order();
 		newOrder.user = user;
-		newOrder.calories = order.calories;
 		newOrder.price = order.price;
 		newOrder.orderItems = orderItems;
 		const savedOrder = await this.orderRepo.save(newOrder);
@@ -93,26 +93,26 @@ export class OrderService {
 			.getOne();
 		newStatus.status = status.status;
 		switch (status.status) {
-			case 0:
+			case OrderStatusEnum.CONFIRMED:
 				newStatus.order_time = new Date();
 				break;
-			case 1:
+			case OrderStatusEnum.DISPATCHED:
 				newStatus.dispatch_time = new Date();
 				break;
-			case 2:
+			case OrderStatusEnum.DELIVERED:
 				newStatus.delivered_time = new Date();
 				break;
 		}
 		return this.orderStatusRepo.save(newStatus);
 	}
 
-	async cancelOrder(orderId:number){
+	async cancelOrder(orderId: number) {
 		const order = await this.orderRepo.findOne({ id: orderId });
 		if (!order) {
 			throw new BadRequestException([`Order with id ${orderId} does not exist`]);
 		}
-		const orderStatus = await this.orderStatusRepo.findOne({order: {id:orderId}});
-		orderStatus.status = 3;
+		const orderStatus = await this.orderStatusRepo.findOne({ order: { id: orderId } });
+		orderStatus.status = OrderStatusEnum.CANCELED;
 		return await this.orderStatusRepo.save(orderStatus);
 	}
 }

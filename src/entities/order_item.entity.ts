@@ -13,6 +13,6 @@ export class OrderItem {
 	@ManyToOne(() => Order, (order) => order.orderItems)
 	order: Order;
 
-	@ManyToOne(() => FoodItem, foodItem => foodItem.orderItem)
+	@ManyToOne(() => FoodItem, (foodItem) => foodItem.orderItem)
 	foodItem: FoodItem;
 }

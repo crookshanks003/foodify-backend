@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from "typeorm";
-import { Order } from "./order.entity";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -15,17 +14,8 @@ export class User {
 	@Column()
 	phone: string;
 
-	@Column()
-	is_staff: boolean;
-
-	@Column({ default: 0 })
-	calories: number;
-
 	@Column({ nullable: true })
 	address: string;
-
-	@OneToMany(() => Order, (order) => order.user)
-	orders: Order[];
 
 	@CreateDateColumn()
 	registered_on: Date;

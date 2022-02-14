@@ -1,8 +1,9 @@
 import { IsNumber } from "class-validator";
+import { OrderStatusEnum } from "src/entities";
 
 export class UpdateStatusDto {
 	@IsNumber()
-	status: 0 | 1 | 2;
+	status: OrderStatusEnum;
 
 	@IsNumber()
 	orderId: number;

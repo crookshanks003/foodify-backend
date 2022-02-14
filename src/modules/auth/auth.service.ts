@@ -19,12 +19,10 @@ export class AuthService {
 
 	async createUser(user: CreateUserDto) {
 		const newUser = new User();
-		newUser.is_staff = false;
 		newUser.name = user.name;
 		newUser.phone = user.phone;
-		newUser.calories = 0;
 		newUser.password = await bcrypt.hash(user.password, this.saltRounds);
-		return await this.userRepo.save(newUser);
+		return this.userRepo.save(newUser);
 	}
 
 	async getUser(credentials: LoginUser) {
@@ -36,17 +34,17 @@ export class AuthService {
 		return existingUser;
 	}
 
-	getJwtToken({ is_staff, id }: User) {
-		const payload = { user: { isStaff: is_staff, userId: id } };
+	getJwtToken(isRestaurant: boolean, id: number) {
+		const payload = { user: { isRestaurant, userId: id } };
 		return this.jwtService.sign(payload);
 	}
 
-	async getUserByPhone(phone: string) {
-		return await this.userRepo.findOne({ phone });
+	getUserByPhone(phone: string) {
+		return this.userRepo.findOne({ phone });
 	}
 
-	async getUserById(id: number){
-		return await this.userRepo.findOne({id});
+	getUserById(id: number) {
+		return this.userRepo.findOne({ id });
 	}
 
 	private async verifyPassword(password: string, hash: string) {

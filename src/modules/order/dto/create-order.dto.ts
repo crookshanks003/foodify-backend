@@ -14,7 +14,4 @@ export class CreateOrderDto {
 
 	@IsNumber()
 	price: number;
-
-	@IsNumber()
-	calories: number;
 }
